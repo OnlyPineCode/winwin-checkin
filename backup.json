@@ -1,0 +1,259 @@
+{
+ "app": "weibo-panel",
+ "version": 1,
+ "exportedAt": "2026/9/29 04:16:53",
+ "config": {
+  "tasks": {
+   "post": {
+    "name": "超话发帖",
+    "count": true,
+    "group": "core",
+    "brief": true
+   },
+   "like": {
+    "name": "超like",
+    "count": false,
+    "group": "core",
+    "brief": false
+   },
+   "purify": {
+    "name": "净化",
+    "count": false,
+    "fixed": 4,
+    "days": true,
+    "group": "core",
+    "brief": true
+   },
+   "build": {
+    "name": "盖楼",
+    "count": true,
+    "group": "core",
+    "brief": true
+   },
+   "big": {
+    "name": "大屏",
+    "count": true,
+    "group": "core",
+    "brief": true
+   },
+   "repost": {
+    "name": "轮博",
+    "count": true,
+    "group": "core",
+    "brief": true
+   },
+   "reply": {
+    "name": "增评",
+    "count": true,
+    "group": "core",
+    "brief": true
+   },
+   "sign": {
+    "name": "超话签到",
+    "count": false,
+    "group": "daily",
+    "brief": false
+   },
+   "yanyi": {
+    "name": "寻艺 + 艾漫签到",
+    "count": false,
+    "group": "daily",
+    "brief": false
+   },
+   "point": {
+    "name": "积分赠送",
+    "count": true,
+    "group": "daily",
+    "brief": true
+   },
+   "careSign": {
+    "name": "超话签到（每日一善/阳光信用）",
+    "group": "care",
+    "count": false,
+    "brief": false
+   },
+   "careTalk": {
+    "name": "每日一善互动 10 条",
+    "count": false,
+    "group": "care",
+    "brief": false
+   },
+   "carePost": {
+    "name": "发白贴 3 条",
+    "count": false,
+    "group": "care",
+    "brief": false
+   },
+   "panda": {
+    "name": "养熊猫喂两次",
+    "count": false,
+    "group": "care",
+    "brief": false
+   },
+   "morning": {
+    "name": "每日早安",
+    "group": "care",
+    "count": false,
+    "brief": false
+   },
+   "night": {
+    "name": "每日晚安",
+    "count": false,
+    "group": "care",
+    "brief": false
+   }
+  },
+  "accounts": [
+   {
+    "id": "a1",
+    "name": "时见山_",
+    "type": "main",
+    "tasks": [
+     "post",
+     "like",
+     "build",
+     "big",
+     "sign",
+     "yanyi",
+     "point",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ],
+    "careNote": "偶尔做"
+   },
+   {
+    "id": "a2",
+    "name": "十月天气多昀_winwin",
+    "type": "norm",
+    "tasks": [
+     "post",
+     "like",
+     "purify",
+     "build",
+     "sign",
+     "point",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ]
+   },
+   {
+    "id": "a3",
+    "name": "账号3",
+    "type": "norm",
+    "tasks": [
+     "post",
+     "like",
+     "purify",
+     "build",
+     "sign",
+     "point",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ]
+   },
+   {
+    "id": "a4",
+    "name": "账号4",
+    "type": "norm",
+    "tasks": [
+     "post",
+     "like",
+     "purify",
+     "build",
+     "sign",
+     "point",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ]
+   },
+   {
+    "id": "a5",
+    "name": "账号5",
+    "type": "norm",
+    "tasks": [
+     "post",
+     "like",
+     "purify",
+     "build",
+     "sign",
+     "point",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ]
+   },
+   {
+    "id": "a6",
+    "name": "账号6",
+    "type": "care",
+    "tasks": [
+     "sign",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ]
+   },
+   {
+    "id": "a7",
+    "name": "账号7",
+    "type": "care",
+    "tasks": [
+     "sign",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ]
+   },
+   {
+    "id": "a8",
+    "name": "账号8",
+    "type": "lunbo",
+    "tasks": [
+     "repost",
+     "reply",
+     "sign",
+     "careSign",
+     "careTalk",
+     "carePost",
+     "panda",
+     "morning",
+     "night"
+    ]
+   }
+  ],
+  "sumHide": [
+   "reply"
+  ],
+  "acctJump": true
+ },
+ "records": {
+  "2026-9-29": {
+   "a1::like": 1
+  }
+ }
+}
