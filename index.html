@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="winwin-checkin">
@@ -24,7 +24,7 @@ body{
 }
 h1{font-size:19px;font-weight:600;letter-spacing:.3px}
 header{margin-bottom:14px}
-.hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .date{font-size:13px;color:#7C8798}
 .bar{height:8px;background:#E3EAF6;border-radius:4px;overflow:hidden}
 .bar-fill{height:100%;width:0;background:#2563EB;border-radius:4px;transition:width .25s}
@@ -50,14 +50,15 @@ header{margin-bottom:14px}
 .card{background:#fff;border:0.5px solid #E2E9F5;border-radius:14px;padding:13px 14px 8px;margin-bottom:11px;transition:opacity .2s}
 .card.main{border-color:#93B4F5;background:#FAFCFF}
 .card.dim{opacity:.42}
-.card-hd{display:flex;align-items:center;justify-content:space-between}
-.name{font-size:15px;font-weight:600;letter-spacing:.2px}
+.card-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.card-hd>div:first-child{flex:1 1 auto;min-width:0}
+.name{font-size:15px;font-weight:600;letter-spacing:.2px;overflow-wrap:anywhere;word-break:break-word}
 .badge{font-size:11px;padding:1px 7px;border-radius:5px;margin-left:7px;font-weight:500}
 .badge.main{background:#2563EB;color:#fff}
-.badge.norm{background:#E8F0FE;color:#1D4ED8}
+.badge.sub{background:#E8F0FE;color:#1D4ED8}
+.badge.norm{background:#EEF4FF;color:#4A6699;box-shadow:inset 0 0 0 1px #D6E2F7}
 .badge.care{background:#EEF2F7;color:#5A6472}
-.badge.task{background:#fff;color:#1D4ED8;box-shadow:inset 0 0 0 1px #93B4F5}
-.login{font-size:11px;padding:1px 7px;border-radius:5px;margin-left:5px;font-weight:500;background:#fff;color:#1D4ED8;box-shadow:inset 0 0 0 1px #93B4F5}
+.badge.lunbo{background:#FDF0F0;color:#B45454;box-shadow:inset 0 0 0 1px #F7DEDE}
 .card.first{border-color:#2563EB}
 .count{font-size:13px;color:#98A3B3;font-variant-numeric:tabular-nums}
 .count.full{color:#2563EB;font-weight:600}
@@ -141,6 +142,7 @@ header{margin-bottom:14px}
 .acct{border-bottom:0.5px solid #EEF2FA}
 .acct:last-child{border-bottom:0}
 .acct-hd{width:100%;display:flex;align-items:center;gap:9px;background:none;border:0;padding:10px 0;font-family:inherit;font-size:13px;color:#1B2432;cursor:pointer;text-align:left}
+.acct-hd>.rk-name{overflow-wrap:anywhere;word-break:break-word}
 .acct.open .acct-hd{padding-bottom:6px}
 .acct-ar{flex:0 0 auto;font-size:14px;color:#BFC9D8;line-height:1;display:inline-block;transition:transform .15s}
 .acct.open .acct-ar{transform:rotate(90deg);color:#2563EB}
@@ -171,8 +173,48 @@ footer{margin-top:18px;text-align:center}
 .tab-dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:0}
 .tabbar button.on .tab-dot{opacity:1}
 
+/* 顶部吸顶栏遮挡补偿：折叠锚点跳转留出空间 */
+#page-config section[id],#page-config .fold{scroll-margin-top:78px}
+html{scroll-behavior:smooth}
+
 .blk-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
 .blk-hd .blk-title{margin-bottom:0}
+
+/* ===== 设置页折叠菜单（默认全部展开，点标题可收起） ===== */
+.fold{background:#fff;border:0.5px solid #E2E9F5;border-radius:14px;margin-bottom:10px;overflow:hidden}
+.fold-hd{width:100%;display:flex;align-items:center;gap:8px;background:none;border:0;font-family:inherit;
+  padding:13px;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent}
+.fold-hd:active{background:#F7FAFF}
+.fold-t{font-size:13.5px;font-weight:600;color:#1B2432;flex:0 0 auto}
+.fold-t::before{content:'';display:inline-block;width:3px;height:13px;border-radius:2px;
+  background:#2563EB;margin-right:7px;vertical-align:-2px}
+.fold[data-fold="backup"] .fold-t::before{background:#15803D}
+.fold[data-fold="help"] .fold-t::before{background:#B6C1D1}
+.fold-sub{flex:1 1 auto;font-size:11px;color:#98A3B3;text-align:right;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;padding-left:6px}
+.fold-ar{flex:0 0 auto;width:22px;height:22px;border-radius:7px;background:#F2F7FF;color:#5B79B8;
+  font-size:12px;line-height:22px;text-align:center;transition:transform .2s;
+  transform:rotate(90deg);display:inline-block;flex-shrink:0}
+.fold:not(.open) .fold-ar{transform:rotate(0deg)}
+.fold-bd{padding:0 13px 15px;border-top:0.5px solid #F0F4FB}
+.fold:not(.open) .fold-bd{display:none}
+.fold-acts{display:flex;justify-content:flex-end;margin:11px 0 2px}
+.fold-acts .mini{flex:0 0 auto}
+.fold .cfg-note{margin-top:10px}
+/* 快览条：收起时也能看到一行关键数据 */
+.fold-kv{display:flex;flex-wrap:wrap;gap:7px 6px;padding:2px 13px 12px}
+.fold-kv:empty{display:none}
+.fold-kv span{font-size:11px;color:#7C8798;background:#F5F9FF;border-radius:7px;padding:4px 9px;
+  font-variant-numeric:tabular-nums;line-height:16px;white-space:nowrap;
+  display:inline-flex;align-items:baseline;gap:3px}
+.fold-kv b{color:#2563EB;font-weight:600;font-size:11.5px}
+.fold-kv span.warn{background:#FFF5F5;color:#B44}
+.fold-kv span.warn b{color:#B44}
+.fold-kv span.ok{background:#F0FBF4;color:#15803D}
+.fold-kv span.ok b{color:#15803D}
+.fold-kv span.mute{background:#F5F6F8;color:#98A3B3}
+/* 收起时底部留白由标签自身承担，避免双倍间距 */
+.fold:not(.open) .fold-kv{padding-bottom:13px}
 .mini{background:#E8F0FE;color:#1D4ED8;border:0;border-radius:8px;padding:6px 11px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:500}
 .spark{border:0;background:transparent;padding:3px 5px;border-radius:7px;cursor:pointer;line-height:0}
 .spark:hover{background:#F2F7FF}
@@ -192,8 +234,8 @@ footer{margin-top:18px;text-align:center}
 .task-list .rk-name.g-care::before{background:#93B4F5}
 .cfg-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:0.5px solid #EEF2FA}
 .cfg-row:last-child{border-bottom:0}
-.cfg-main{flex:1;min-width:0}
-.cfg-name{font-size:14px;font-weight:600;word-break:break-all}
+.cfg-main{flex:1 1 auto;min-width:0}
+.cfg-name{font-size:14px;font-weight:600;overflow-wrap:anywhere;word-break:break-word}
 .cfg-sub{display:block;font-size:11px;color:#98A3B3;margin-top:3px}
 .cfg-ops{display:flex;gap:5px;flex:0 0 auto}
 .cfg-ops button{background:#E9F0FE;border:0.5px solid #E2E9F5;border-radius:8px;min-width:30px;height:30px;padding:0 8px;font-size:13px;color:#55606F;font-family:inherit;cursor:pointer}
@@ -201,10 +243,31 @@ footer{margin-top:18px;text-align:center}
 .cfg-note{font-size:11px;color:#98A3B3;line-height:1.9}
 .bk-stat{font-size:11px;color:#7C8798;line-height:1.9;margin-bottom:9px}
 .bk-stat b{color:#1D4ED8;font-weight:600;font-variant-numeric:tabular-nums}
+.bk-warn{color:#C2410C}
 .bk-row{display:flex;gap:8px;margin-top:9px}
 .bk-row .btn{height:44px;font-size:13px}
-.ta{width:100%;min-height:160px;border:1px solid #DCE4F0;border-radius:10px;padding:10px 11px;font-size:12px;line-height:1.6;font-family:ui-monospace,Menlo,Consolas,monospace;background:#F7FAFF;color:#1B2432;resize:vertical}
+.bk-snap{margin-top:12px;padding:10px 11px;background:#F5F8FF;border:1px solid #E3EBFA;border-radius:10px}
+.bk-snap-hd{display:flex;align-items:baseline;gap:8px;font-size:12px;font-weight:600;color:#1B2432}
+.bk-snap-tag{font-size:10px;font-weight:400;color:#98A3B3}
+.bk-snap .bk-row{margin-top:8px}
+.bk-snap .bk-row .btn{height:38px;font-size:12px;background:#fff}
+.bk-gh{background:#F7FBF8;border-color:#DFEFE4}
+.bk-gh .bk-row{flex-wrap:wrap}
+.bk-gh .bk-row .btn{flex:1 1 30%;min-width:86px;padding:0 8px}
+.bk-gh-stat{font-size:11px;color:#7C8798;line-height:1.8;margin:7px 0 0}
+.bk-gh-stat b{color:#1D4ED8;font-weight:600}
+.bk-gh-ok{color:#15803D}
+.bk-gh-err{color:#DC2626}
+.ta{width:100%;min-height:160px;border:1px solid #DCE4F0;border-radius:10px;padding:10px 11px;font-size:16px;line-height:1.6;font-family:ui-monospace,Menlo,Consolas,monospace;background:#F7FAFF;color:#1B2432;resize:vertical}
 .ta:focus{outline:none;border-color:#2563EB;background:#fff}
+
+/* ===== iOS 防键盘自动放大：输入控件字号必须 >= 16px ===== */
+@media (max-width: 640px){
+  input, textarea, select{font-size:16px !important}
+  .fld input, .fld select{font-size:16px}
+  .ta{font-size:16px}
+  .num{font-size:16px}
+}
 
 .modal{position:fixed;inset:0;background:rgba(23,32,48,.38);z-index:50;display:flex;align-items:flex-end;justify-content:center}
 .modal.hidden{display:none}
@@ -212,8 +275,9 @@ footer{margin-top:18px;text-align:center}
 .md-title{font-size:16px;font-weight:600;margin-bottom:15px}
 .fld{display:block;margin-bottom:12px}
 .fld span{display:block;font-size:12px;color:#7C8798;margin-bottom:5px}
-.fld input,.fld select{width:100%;height:42px;border:1px solid #DCE4F0;border-radius:10px;padding:0 11px;font-size:14px;font-family:inherit;background:#F7FAFF;color:#1B2432;-webkit-appearance:none;appearance:none}
+.fld input,.fld select{width:100%;height:42px;border:1px solid #DCE4F0;border-radius:10px;padding:0 11px;font-size:16px;font-family:inherit;background:#F7FAFF;color:#1B2432;-webkit-appearance:none;appearance:none}
 .fld input:focus,.fld select:focus{outline:none;border-color:#2563EB;background:#fff}
+.fld-hint{font-size:11px;color:#A3AEBE;line-height:1.6;margin:-6px 0 12px 1px}
 .md-label{font-size:12px;color:#7C8798;margin:15px 0 6px}
 .pick{border:0.5px solid #E2E9F5;border-radius:12px;padding:2px 12px;max-height:250px;overflow-y:auto}
 .pick-g{font-size:11px;font-weight:600;color:#55606F;padding:10px 0 2px}
@@ -255,7 +319,7 @@ footer{margin-top:18px;text-align:center}
 
   <footer>
     <button class="reset" id="resetBtn">清空当日数据</button>
-    <p class="tip">从上到下 = 切号顺序（首选 / 次选登录排最前）<br>带输入框的填实际数量，留空表示没做</p>
+    <p class="tip">从上到下 = 切号顺序<br>带输入框的填实际数量，留空表示没做</p>
   </footer>
 </div>
 
@@ -315,48 +379,109 @@ footer{margin-top:18px;text-align:center}
 
 <div id="page-config" class="hidden">
   <header>
-    <div class="hd"><h1>设置</h1></div>
+    <div class="hd"><h1>设置</h1>
+      <button class="mini" id="foldAllBtn">全部收起</button>
+    </div>
   </header>
 
-  <section class="dash-block">
-    <div class="blk-hd"><p class="blk-title">账号</p><button class="mini" id="addAcctBtn">+ 添加账号</button></div>
-    <div id="acctCfgList"></div>
-  </section>
-
-  <section class="dash-block">
-    <div class="blk-hd"><p class="blk-title">任务</p><button class="mini" id="addTaskBtn">+ 添加任务</button></div>
-    <div id="taskCfgList"></div>
-  </section>
-
-  <section class="dash-block">
-    <div class="blk-hd"><p class="blk-title">任务合计显示项</p><button class="mini" id="sumAllBtn">全选</button></div>
-    <p class="cfg-note">勾选哪些项出现在看板「任务合计」和打卡页「当日数据汇总」里。<br>只有计数型任务能选（填数量的那些）；超like、各类签到属于打卡型，本来就没有合计。</p>
-    <div id="sumCfgList"></div>
-  </section>
-
-  <section class="dash-block">
-    <div class="blk-hd"><p class="blk-title">数据备份</p></div>
-    <p class="bk-stat" id="bkStat"></p>
-    <div class="bk-row">
-      <button class="btn primary" id="bkExport">导出备份文件</button>
-      <button class="btn ghost" id="bkCopy">复制备份文本</button>
+  <section class="fold open" data-fold="acct">
+    <button class="fold-hd" type="button">
+      <span class="fold-t">账号</span>
+      <span class="fold-sub" id="foldSubAcct"></span>
+      <span class="fold-ar">›</span>
+    </button>
+    <div class="fold-kv" id="foldKvAcct"></div>
+    <div class="fold-bd">
+      <div class="fold-acts"><button class="mini" id="addAcctBtn">+ 添加账号</button></div>
+      <div id="acctCfgList"></div>
     </div>
-    <div class="bk-row">
-      <button class="btn ghost" id="bkImportFile">从文件恢复</button>
-      <button class="btn ghost" id="bkPaste">粘贴恢复</button>
+  </section>
+
+  <section class="fold open" data-fold="task">
+    <button class="fold-hd" type="button">
+      <span class="fold-t">任务</span>
+      <span class="fold-sub" id="foldSubTask"></span>
+      <span class="fold-ar">›</span>
+    </button>
+    <div class="fold-kv" id="foldKvTask"></div>
+    <div class="fold-bd">
+      <div class="fold-acts"><button class="mini" id="addTaskBtn">+ 添加任务</button></div>
+      <div id="taskCfgList"></div>
     </div>
-    <input type="file" id="bkFile" accept=".json,application/json" style="display:none">
-    <p class="cfg-note" style="margin-top:9px">建议每周导出一次，存到微信收藏或网盘。恢复会覆盖当前数据，账号与任务配置也会一起还原。</p>
   </section>
 
-  <section class="dash-block">
-    <p class="blk-title">说明</p>
-    <p class="cfg-note">账号从上到下的顺序 = 切号顺序，用 ↑ ↓ 调整（「首选 / 次选登录」只是标记，不会自动排到最前）。<br>记录按账号的内部编号保存，改昵称不影响已有数据；删除账号或任务不会抹掉历史记录，只是不再显示。</p>
+  <section class="fold open" data-fold="sum">
+    <button class="fold-hd" type="button">
+      <span class="fold-t">任务合计显示项</span>
+      <span class="fold-sub" id="foldSubSum"></span>
+      <span class="fold-ar">›</span>
+    </button>
+    <div class="fold-kv" id="foldKvSum"></div>
+    <div class="fold-bd">
+      <p class="cfg-note">勾选哪些项出现在看板「任务合计」和打卡页「当日数据汇总」里。<br>只有计数型任务能选（填数量的那些）；超like、各类签到属于打卡型，本来就没有合计。</p>
+      <div class="fold-acts"><button class="mini" id="sumAllBtn">全选 / 全不选</button></div>
+      <div id="sumCfgList"></div>
+    </div>
   </section>
 
-  <footer>
-    <button class="reset" id="resetCfgBtn">恢复默认账号与任务</button>
-  </footer>
+  <section class="fold open" data-fold="backup">
+    <button class="fold-hd" type="button">
+      <span class="fold-t">数据备份</span>
+      <span class="fold-sub" id="foldSubBackup"></span>
+      <span class="fold-ar">›</span>
+    </button>
+    <div class="fold-kv" id="foldKvBackup"></div>
+    <div class="fold-bd">
+      <p class="bk-stat" id="bkStat"></p>
+      <div class="bk-row">
+        <button class="btn primary" id="bkExport">导出备份文件</button>
+        <button class="btn ghost" id="bkCopy">复制备份文本</button>
+      </div>
+      <div class="bk-row">
+        <button class="btn ghost" id="bkImportFile">从文件恢复</button>
+        <button class="btn ghost" id="bkPaste">粘贴恢复</button>
+      </div>
+      <input type="file" id="bkFile" accept=".json,application/json" style="display:none">
+      <div class="bk-snap">
+        <div class="bk-snap-hd">
+          <span>自动快照</span>
+          <span class="bk-snap-tag">每天首次打开自动生成</span>
+        </div>
+        <div class="bk-row">
+          <button class="btn ghost" id="bkSnapSave">立即存快照</button>
+          <button class="btn ghost" id="bkSnapRestore">从快照恢复</button>
+        </div>
+      </div>
+
+      <div class="bk-snap bk-gh">
+        <div class="bk-snap-hd">
+          <span>GitHub 云端备份</span>
+          <span class="bk-snap-tag">异地存放，换设备 / 更新系统可用</span>
+        </div>
+        <p class="bk-gh-stat" id="ghStat"></p>
+        <div class="bk-row">
+          <button class="btn ghost" id="ghSetup">设置</button>
+          <button class="btn ghost" id="ghUpload">上传到仓库</button>
+          <button class="btn ghost" id="ghPull">从仓库恢复</button>
+        </div>
+      </div>
+      <p class="cfg-note" style="margin-top:9px">建议每周导出一次，存到微信收藏或网盘。恢复会覆盖当前数据，账号与任务配置也会一起还原。<br>自动快照存在本机，防系统清理；导出文件存到外部，防换设备；GitHub 备份存到云端，防手机彻底丢失。</p>
+    </div>
+  </section>
+
+  <section class="fold open" data-fold="help">
+    <button class="fold-hd" type="button">
+      <span class="fold-t">使用说明</span>
+      <span class="fold-ar">›</span>
+    </button>
+    <div class="fold-kv" id="foldKvHelp"></div>
+    <div class="fold-bd">
+      <p class="cfg-note">账号从上到下的顺序就是切号顺序，用每行的 ↑ ↓ 调整。<br>「主账号 / 副账号 / 养号」只是分类标记，不影响顺序也不影响统计。<br>记录按账号的内部编号保存，改昵称不影响已有数据；删除账号或任务不会抹掉历史记录，只是不再显示。</p>
+      <div class="fold-acts" style="margin-top:12px">
+        <button class="reset" id="resetCfgBtn">恢复默认账号与任务</button>
+      </div>
+    </div>
+  </section>
 </div>
 
 <nav class="tabbar">
@@ -368,7 +493,8 @@ footer{margin-top:18px;text-align:center}
 <div id="modal" class="modal hidden"><div class="modal-inner" id="modalInner"></div></div>
 
 <script>
-var TYPE_LABEL  = {main:'主账号', norm:'常规号', care:'养号号', task:'任务号'};
+var TYPE_LABEL  = {main:'主账号', sub:'副账号', norm:'常规号', care:'养号', lunbo:'抡博号'};
+var TYPE_ORDER  = ['main','sub','norm','care','lunbo'];
 var GROUP_LABEL = {core:'核心 · 必做', daily:'日常 · 尽量做', care:'养号 · 顺带做'};
 var GROUP_SHORT = {core:'核心', daily:'日常', care:'养号'};
 var GROUP_ORDER = ['core','daily','care'];
@@ -399,14 +525,14 @@ var CARE_TASKS = ['sign'].concat(CARE_ALL);
 var TASK_TASKS = ['repost','reply','sign'].concat(CARE_ALL);
 
 var DEFAULT_ACCOUNTS = [
-  {id:'a4',name:'账号1',type:'main',login:1,tasks:MAIN_TASKS.slice(),careNote:'偶尔做'},
-  {id:'a2',name:'账号2',type:'norm',login:2,tasks:NORM_TASKS.slice()},
-  {id:'a1',name:'账号3',type:'norm',tasks:NORM_TASKS.slice()},
-  {id:'a3',name:'账号4',type:'norm',tasks:NORM_TASKS.slice()},
+  {id:'a1',name:'账号1',type:'main',tasks:MAIN_TASKS.slice(),careNote:'偶尔做'},
+  {id:'a2',name:'账号2',type:'sub',tasks:NORM_TASKS.slice()},
+  {id:'a3',name:'账号3',type:'norm',tasks:NORM_TASKS.slice()},
+  {id:'a4',name:'账号4',type:'norm',tasks:NORM_TASKS.slice()},
   {id:'a5',name:'账号5',type:'norm',tasks:NORM_TASKS.slice()},
   {id:'a6',name:'账号6',type:'care',tasks:CARE_TASKS.slice()},
   {id:'a7',name:'账号7',type:'care',tasks:CARE_TASKS.slice()},
-  {id:'a8',name:'账号8',type:'task',tasks:TASK_TASKS.slice()}
+  {id:'a8',name:'账号8',type:'lunbo',tasks:TASK_TASKS.slice()}
 ];
 
 var CFG_KEY = 'wb-config';
@@ -415,6 +541,67 @@ function loadCfg(){
   var c = null;
   try { c = JSON.parse(localStorage.getItem(CFG_KEY) || 'null'); } catch(e){ c = null; }
   if(!c || !c.accounts || !c.tasks) return {tasks:clone(DEFAULT_TASKS), accounts:clone(DEFAULT_ACCOUNTS)};
+  migrateCfg(c);
+  // 类型迁移改的是对象，这里统一落盘；编号迁移要等 ACCOUNTS 就位，见 refreshConfig
+  try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch(e){}
+  return c;
+}
+/* 老数据迁移：并入五档类型；'task'（旧任务号）归为「抡博号」；移除废弃的 login 字段；
+   并把「一期的内部编号」重排成 a1..aN（早期 id 和界面序号对不上，如账号4 是 a3、账号3 是 a1） */
+function remapAccounts(){
+  // 一期的 8 个默认账号 id（顺序即当时界面顺序）；只有全中且无自建账号时才重排
+  var LEGACY_IDS = ['a4','a2','a1','a3','a5','a6','a7','a8'];
+  var ids = [], i;
+  for(i = 0; i < ACCOUNTS.length; i++) ids.push(ACCOUNTS[i].id);
+  if(ids.length !== LEGACY_IDS.length) return null;
+  // 关键：id 必须「错位」才需要重排。已经排好（a1..a8 按序）时直接返回，
+  // 否则 a1..a8 也全在 LEGACY_IDS 里，会被反复重排、越排越乱。
+  var outOfOrder = false;
+  for(i = 0; i < ids.length; i++){
+    if(LEGACY_IDS.indexOf(ids[i]) < 0) return null;      // 有自建账号，不动
+    if(ids[i] !== 'a' + (i + 1)) outOfOrder = true;      // 顺序正确就不用动
+  }
+  if(!outOfOrder) return null;
+  var map = {};
+  for(i = 0; i < ids.length; i++) map[ids[i]] = 'a' + (i + 1);   // 按界面位置重编号
+  for(i = 0; i < ACCOUNTS.length; i++) ACCOUNTS[i].id = map[ACCOUNTS[i].id];
+  return map;
+}
+function remapDayMap(key, map){
+  var raw = null;
+  try { raw = localStorage.getItem(key); } catch(e){ return; }
+  if(!raw) return;
+  var days = null;
+  try { days = JSON.parse(raw); } catch(e){ return; }
+  if(!days || typeof days !== 'object') return;
+  var hit = false;
+  for(var dk in days){
+    var day = days[dk];
+    if(!day || typeof day !== 'object') continue;
+    var nd = {}, moved = false;
+    for(var k in day){
+      var nk = k, pre = k.indexOf('::');
+      if(pre > 0 && map[k.slice(0, pre)]){
+        nk = map[k.slice(0, pre)] + k.slice(pre);
+        moved = true; hit = true;
+      }
+      nd[nk] = day[k];
+    }
+    if(moved) days[dk] = nd;
+  }
+  if(hit){ try { localStorage.setItem(key, JSON.stringify(days)); } catch(e){} }
+}
+
+function migrateCfg(c){
+  var changed = false;
+  for(var i = 0; i < c.accounts.length; i++){
+    var a = c.accounts[i];
+    if(a.type === 'task'){ a.type = 'lunbo'; changed = true; }   // 旧「任务号」-> 抡博号
+    if(!a.type){ a.type = 'norm'; changed = true; }
+    if(TYPE_ORDER.indexOf(a.type) < 0){ a.type = 'norm'; changed = true; }
+    if('login' in a){ delete a.login; changed = true; }
+  }
+  if(changed){ try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch(e){} }
   return c;
 }
 function saveCfg(){
@@ -486,8 +673,20 @@ function modeLabel(t){
 refreshConfig();
 
 var ALL_KEY = 'wb-records';
+var BAK_KEY = 'wb-records-bak';
+var BAK_META = 'wb-bak-meta';
 var allData = {};
 try { allData = JSON.parse(localStorage.getItem(ALL_KEY) || '{}'); } catch(e) { allData = {}; }
+
+/* 一期账号编号重排：必须等 ACCOUNTS 和存储键都就位后再跑，
+   否则 remapDayMap 会拿到 undefined 的键名，记录里的旧 id 永远换不掉 */
+(function migrateAccountIds(){
+  var map = remapAccounts();
+  if(!map) return;
+  remapDayMap(ALL_KEY, map);
+  remapDayMap(BAK_KEY, map);
+  try { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); } catch(e){}
+})();
 
 var todayKey = fmt(new Date());
 var currentKey = todayKey;
@@ -525,6 +724,9 @@ function save(){
     if(!allData[dk] || !Object.keys(allData[dk]).length) delete allData[dk];
   }
   try { localStorage.setItem(ALL_KEY, JSON.stringify(allData)); } catch(e) {}
+  // 有数据后立刻补一份当日快照：当天首次打开时还没有数据，
+  // 只靠启动时存会漏掉「当天第一次打卡」这版内容
+  snapshotSave(false);
 }
 function daysOf(aid, tk){
   var n = 0, k = aid + '::' + tk;
@@ -580,8 +782,7 @@ function render(){
     var a = ACCOUNTS[n];
     html += '<section class="card' + (a.type === 'main' ? ' main' : '') + (n === 0 ? ' first' : '') + '" data-aid="' + a.id + '">';
     html += '<div class="card-hd"><div><span class="name">' + esc(a.name) + '</span>' +
-            '<span class="badge ' + a.type + '">' + (TYPE_LABEL[a.type] || '常规号') + '</span>' +
-            (a.login ? '<span class="login">' + (a.login === 1 ? '① 首选登录' : '② 次选登录') + '</span>' : '') +
+            '<span class="badge ' + a.type + '">' + (TYPE_LABEL[a.type] || '副账号') + '</span>' +
             '</div>' +
             '<span class="count" data-cnt="' + a.id + '"></span></div>';
     var gs = groupsOf(a);
@@ -924,14 +1125,27 @@ function renderDashBody(cur, map, list){
   for(var dk in allData) if(hasData(allData[dk])) hasAny = true;
 
   if(!hasAny){
-    document.getElementById('kpiGrid').innerHTML = '<p class="empty">还没有任何记录<br>先去「打卡」页填几项，这里就会出数据</p>';
-    document.getElementById('dashSum').innerHTML = '';
+    var EH = '<p class="empty">还没有任何记录<br>先去「打卡」页填几项，这里就会出数据</p>';
+    document.getElementById('kpiGrid').innerHTML =
+      '<div class="kpi"><span class="kl">平均完成率</span><span class="kv z">—</span></div>' +
+      '<div class="kpi"><span class="kl">完成项数</span><span class="kv z">0</span></div>' +
+      '<div class="kpi"><span class="kl">有记录天数</span><span class="kv z">0<small>天</small></span></div>' +
+      '<div class="kpi"><span class="kl">历史平均完成率</span><span class="kv z">—</span></div>';
+    document.getElementById('dashSum').innerHTML =
+      '<p class="empty" style="grid-column:1/-1;padding:8px 0">暂无数据，打卡后这里会显示各项合计</p>';
     document.getElementById('sparkBtn').innerHTML = '';
+    document.getElementById('sparkBtn').classList.remove('on');
     document.getElementById('trendChart').innerHTML = '';
-    document.getElementById('acctRank').innerHTML = '';
-    document.getElementById('taskRank').innerHTML = '';
+    document.getElementById('trendChart').classList.add('hidden');
+    document.getElementById('acctRank').innerHTML = EH;
+    document.getElementById('taskRank').innerHTML = EH;
+    document.getElementById('rankNote').textContent = '暂无数据，打卡后这里会显示完成情况';
+    var rtb = document.getElementById('rankToggle');
+    rtb.textContent = '展开全部';
+    rtb.classList.add('hidden');
     return;
   }
+  document.getElementById('rankToggle').classList.remove('hidden');
 
   var rateTxt = '—';
   if(cur && cur.days > 0) rateTxt = Math.round((cur.items / cur.days) / (TOTAL_TASKS || 1) * 100) + '<small>%</small>';
@@ -1199,8 +1413,7 @@ function renderCfg(){
     var a = ACCOUNTS[i];
     h += '<div class="cfg-row" data-aid="' + a.id + '">' +
       '<div class="cfg-main"><span class="cfg-name">' + esc(a.name) + '</span>' +
-      '<span class="badge ' + a.type + '">' + (TYPE_LABEL[a.type] || '常规号') + '</span>' +
-      (a.login ? '<span class="login">' + (a.login === 1 ? '① 首选' : '② 次选') + '</span>' : '') +
+      '<span class="badge ' + a.type + '">' + (TYPE_LABEL[a.type] || '副账号') + '</span>' +
       '<span class="cfg-sub">' + allKeys(a).length + ' 项任务</span></div>' +
       '<div class="cfg-ops">' +
       '<button data-op="up"' + (i === 0 ? ' disabled' : '') + '>&#8593;</button>' +
@@ -1234,7 +1447,106 @@ function renderCfg(){
   document.getElementById('sumCfgList').innerHTML = '<div class="pick">' + sh + '</div>';
   document.getElementById('sumAllBtn').textContent =
     (!cfg.sumHide || !cfg.sumHide.length) ? '全不选' : '全选';
+
+  /* 折叠区右侧摘要 + 快览条：收起时也能看到关键信息 */
+  var onSum = 0;
+  for(var sk2 in TASK){ var s2 = TASK[sk2]; if((s2.count || s2.fixed) && (!cfg.sumHide || cfg.sumHide.indexOf(sk2) < 0)) onSum++; }
+  var nAcct = ACCOUNTS.length, nTask = Object.keys(TASK).length;
+  setFoldSub('foldSubAcct', nAcct ? nAcct + ' 个账号' : '未配置');
+  setFoldSub('foldSubTask', nTask ? nTask + ' 项任务' : '未配置');
+  setFoldSub('foldSubSum', onSum + ' / ' + SUM_KEYS_ALL.length + ' 项已显示');
+
+  /* 账号快览：按五种类型统计（只显示实际存在的档位） */
+  var tCnt = {}, nMain = 0;
+  for(var tv0 = 0; tv0 < TYPE_ORDER.length; tv0++) tCnt[TYPE_ORDER[tv0]] = 0;
+  for(var ai = 0; ai < ACCOUNTS.length; ai++){
+    var aa = ACCOUNTS[ai];
+    var at = (TYPE_ORDER.indexOf(aa.type) >= 0) ? aa.type : 'norm';
+    tCnt[at]++;
+    if(at === 'main') nMain++;
+  }
+  var SHORT = {main:'主', sub:'副', norm:'常规', care:'养', lunbo:'抡博'};
+  var typeBits = [];
+  for(var tv1 = 0; tv1 < TYPE_ORDER.length; tv1++){
+    var tk0 = TYPE_ORDER[tv1];
+    if(tCnt[tk0]) typeBits.push(SHORT[tk0] + ' ' + tCnt[tk0]);
+  }
+  var akv = '<span>共 <b>' + nAcct + '</b> 个</span>';
+  if(typeBits.length) akv += '<span>' + typeBits.join(' · ') + '</span>';
+  akv += nMain
+    ? '<span class="ok">已标主账号</span>'
+    : '<span class="warn">未标主账号</span>';
+  document.getElementById('foldKvAcct').innerHTML = akv;
+
+  /* 任务快览：分组分布压缩成一条 */
+  var gCnt = {}, nCount = 0, nCheck = 0;
+  for(var tk2 in TASK){
+    var tt2 = TASK[tk2];
+    gCnt[tt2.group] = (gCnt[tt2.group] || 0) + 1;
+    if(tt2.count || tt2.fixed) nCount++; else nCheck++;
+  }
+  var gBits = [];
+  for(var gk in GROUP_SHORT) if(gCnt[gk]) gBits.push(GROUP_SHORT[gk] + ' ' + gCnt[gk]);
+  var tkv = '<span>共 <b>' + nTask + '</b> 项</span>';
+  if(gBits.length) tkv += '<span>' + gBits.join(' · ') + '</span>';
+  tkv += '<span>计数 <b>' + nCount + '</b> · 打卡 <b>' + nCheck + '</b></span>';
+  document.getElementById('foldKvTask').innerHTML = tkv;
+
+  /* 使用说明快览：把最容易踩的坑直接摆出来 */
+  document.getElementById('foldKvHelp').innerHTML =
+    '<span>账号顺序 = 切号顺序</span>' +
+    '<span>类型只是标记</span>' +
+    '<span>删账号不删记录</span>';
+
+  /* 合计项快览 */
+  document.getElementById('foldKvSum').innerHTML =
+    '<span>已显示 <b>' + onSum + '</b> 项</span>' +
+    '<span>可计数共 <b>' + SUM_KEYS_ALL.length + '</b> 项</span>' +
+    (onSum === SUM_KEYS_ALL.length ? '<span class="ok">全部显示中</span>'
+      : (onSum ? '<span class="warn">已隐藏 ' + (SUM_KEYS_ALL.length - onSum) + ' 项</span>'
+               : '<span class="warn">全部隐藏</span>'));
+
   renderBkStat();
+}
+
+function setFoldSub(id, text){
+  var el = document.getElementById(id);
+  if(el) el.textContent = text;
+}
+
+/* 折叠菜单：默认全部展开，点标题收起/再次点开；支持一键全收 / 全展 */
+function bindFolds(){
+  var fds = document.querySelectorAll('.fold');
+  function handler(i){
+    return function(){
+      var fd = fds[i];
+      fd.classList.toggle('open');
+      if(fd.classList.contains('open')){
+        setTimeout(function(){ try { fd.scrollIntoView({ block: 'start' }); } catch(e){} }, 40);
+      }
+      updateFoldAllBtn();
+    };
+  }
+  for(var i = 0; i < fds.length; i++){
+    var hd = fds[i].querySelector('.fold-hd');
+    if(hd) hd.addEventListener('click', handler(i));
+  }
+  var all = document.getElementById('foldAllBtn');
+  if(all) all.addEventListener('click', function(){
+    var anyOpen = document.querySelectorAll('.fold.open').length > 0;
+    for(var j = 0; j < fds.length; j++){
+      if(anyOpen) fds[j].classList.remove('open');
+      else fds[j].classList.add('open');
+    }
+    updateFoldAllBtn();
+    if(!anyOpen) try { window.scrollTo({ top: 0 }); } catch(e){}
+  });
+  updateFoldAllBtn();
+}
+function updateFoldAllBtn(){
+  var all = document.getElementById('foldAllBtn');
+  if(!all) return;
+  all.textContent = document.querySelectorAll('.fold.open').length > 0 ? '全部收起' : '全部展开';
 }
 
 function renderBkStat(){
@@ -1246,9 +1558,46 @@ function renderBkStat(){
   }
   var last = '';
   try { last = localStorage.getItem('wb-lastbackup') || ''; } catch(e){}
-  document.getElementById('bkStat').innerHTML =
+  var snap = snapshotInfo();
+
+  var html =
     '当前共 <b>' + days + '</b> 天记录 · <b>' + items + '</b> 项数据 · <b>' + ACCOUNTS.length + '</b> 个账号 · <b>' + SUM_KEYS_ALL.length + '</b> 项可计数任务' +
-    '<br>上次备份：' + (last ? esc(last) : '从未备份');
+    '<br>上次导出备份：' + (last ? esc(last) : '<span class="bk-warn">从未备份</span>');
+
+  html += '<br>自动快照：';
+  if(snap) html += esc(snap.at) + '（' + snap.days + ' 天）';
+  else html += '<span class="bk-warn">暂无</span>';
+
+  // 提醒：超过 7 天没导出
+  if(days > 0){
+    var warn = '';
+    if(!last) warn = '数据还没导出过，建议现在备份一次。';
+    else {
+      var ms = Date.parse(last.replace(/\//g,'-')) || 0;
+      var gap = ms ? Math.floor((Date.now() - ms)/86400000) : -1;
+      if(gap >= 7) warn = '距上次导出已 ' + gap + ' 天，建议备份一次。';
+    }
+    if(warn) html += '<br><span class="bk-warn">⚠️ ' + warn + '</span>';
+  }
+  document.getElementById('bkStat').innerHTML = html;
+
+  /* 备份快览条：压到 3 个标签 */
+  var bkv = '<span>记录 <b>' + days + '</b> 天 · <b>' + items + '</b> 项</span>';
+  bkv += snap
+    ? '<span class="ok">快照 ' + esc(String(snap.at).split(' ')[0]) + '</span>'
+    : '<span class="warn">无快照</span>';
+  if(last){
+    var lms = Date.parse(last.replace(/\//g,'-')) || 0;
+    var lgap = lms ? Math.floor((Date.now() - lms)/86400000) : -1;
+    bkv += (lgap >= 7 || lgap < 0)
+      ? '<span class="warn">导出 ' + (lgap < 0 ? '未知' : lgap + ' 天前') + '</span>'
+      : '<span>导出 ' + (lgap <= 0 ? '今天' : lgap + ' 天前') + '</span>';
+  } else {
+    bkv += '<span class="warn">从未导出</span>';
+  }
+  document.getElementById('foldKvBackup').innerHTML = bkv;
+  var gh = ghCfg();
+  setFoldSub('foldSubBackup', (gh && gh.token ? 'GitHub 已配置' : 'GitHub 未配置') + ' · ' + (last ? '已导出' : '未导出'));
 }
 
 function backupJSON(){
@@ -1264,8 +1613,243 @@ function markBackup(){
   try { localStorage.setItem('wb-lastbackup', new Date().toLocaleString('zh-CN')); } catch(e){}
   if(document.getElementById('bkStat')) renderBkStat();
 }
+
+/* ===== 自动快照：每天首次打开时留一份，防 iOS 清 localStorage ===== */
+function snapshotSave(force){
+  try {
+    var meta = null;
+    try { meta = JSON.parse(localStorage.getItem(BAK_META) || 'null'); } catch(e){ meta = null; }
+    // 每天只存一次（除非 force）
+    if(!force && meta && meta.day === todayKey) return false;
+    var n = 0;
+    for(var dk in allData) if(allData[dk] && Object.keys(allData[dk]).length) n++;
+    if(!n && !force) return false;              // 没数据不存，避免用空快照覆盖
+    localStorage.setItem(BAK_KEY, JSON.stringify(allData));
+    localStorage.setItem(BAK_META, JSON.stringify({
+      day: todayKey,
+      at: new Date().toLocaleString('zh-CN'),
+      days: n
+    }));
+    return true;
+  } catch(e){ return false; }
+}
+function snapshotInfo(){
+  try {
+    var meta = JSON.parse(localStorage.getItem(BAK_META) || 'null');
+    var raw = localStorage.getItem(BAK_KEY);
+    if(!meta || !raw) return null;
+    var obj = JSON.parse(raw);
+    var n = 0;
+    for(var dk in obj) if(obj[dk] && Object.keys(obj[dk]).length) n++;
+    meta.days = n;
+    meta.size = raw.length;
+    return meta;
+  } catch(e){ return null; }
+}
+function snapshotRestore(){
+  var info = snapshotInfo();
+  if(!info){ alert('还没有自动快照。\n\n快照会在你每天第一次打开面板时自动生成。'); return; }
+  var cur = 0;
+  for(var dk in allData) if(allData[dk] && Object.keys(allData[dk]).length) cur++;
+  if(!confirm('用自动快照恢复数据？\n\n快照内容：' + info.days + ' 天记录（' + info.at + '）\n当前数据：' + cur + ' 天记录\n\n当前数据会被快照覆盖，无法撤销。')) return;
+  try {
+    var raw = localStorage.getItem(BAK_KEY);
+    localStorage.setItem(ALL_KEY, raw);
+  } catch(e){
+    alert('写入失败，可能是存储空间不足。');
+    return;
+  }
+  alert('已恢复，页面将重新加载。');
+  location.reload();
+}
+
 function bkFileName(){
   return '微博打卡备份-' + todayKey + '.json';
+}
+
+/* ===== GitHub 云端备份（手动） ===== */
+var GH_KEY = 'wb-github';
+var GH_FILE = 'backup.json';
+function ghCfg(){
+  try { return JSON.parse(localStorage.getItem(GH_KEY) || 'null'); } catch(e){ return null; }
+}
+function ghSaveCfg(o){
+  try { localStorage.setItem(GH_KEY, JSON.stringify(o)); } catch(e){}
+}
+function ghClear(){
+  try { localStorage.removeItem(GH_KEY); } catch(e){}
+}
+function ghRender(){
+  var el = document.getElementById('ghStat');
+  if(!el) return;
+  var g = ghCfg();
+  if(!g || !g.token || !g.owner || !g.repo){
+    el.innerHTML = '未配置。点「设置」填入仓库信息与访问令牌。';
+    return;
+  }
+  el.innerHTML =
+    '仓库：<b>' + esc(g.owner + '/' + g.repo) + '</b>' +
+    '<br>文件：' + esc(g.path || GH_FILE) +
+    '<br>上次上传：' + (g.lastUpload ? esc(g.lastUpload) : '尚未上传') +
+    '<br>上次恢复：' + (g.lastPull ? esc(g.lastPull) : '尚未恢复');
+}
+function ghSetup(){
+  var g = ghCfg() || {};
+  showModal('<h2 class="md-title">GitHub 设置</h2>' +
+    '<p class="cfg-note" style="margin:0 0 9px">需要一个只对该仓库有 Contents 读写权限的令牌。令牌只存在这台设备，不会外传。</p>' +
+    '<label class="fld"><span>用户名 / 组织名</span><input class="inp" id="ghOwner" placeholder="例如 zhangsan" value="' + esc(g.owner||'') + '"></label>' +
+    '<label class="fld"><span>仓库名</span><input class="inp" id="ghRepo" placeholder="例如 winwin-checkin" value="' + esc(g.repo||'') + '"></label>' +
+    '<label class="fld"><span>文件路径</span><input class="inp" id="ghPath" placeholder="' + GH_FILE + '" value="' + esc(g.path||GH_FILE) + '"></label>' +
+    '<label class="fld"><span>分支</span><input class="inp" id="ghBranch" placeholder="main" value="' + esc(g.branch||'main') + '"></label>' +
+    '<label class="fld"><span>访问令牌</span><input class="inp" id="ghToken" type="password" placeholder="github_pat_..." value="' + esc(g.token||'') + '"></label>' +
+    '<label class="fld"><span>提交署名（可留空）</span><input class="inp" id="ghUser" placeholder="例如 打卡面板" value="' + esc(g.committer||'') + '"></label>' +
+    '<div class="md-btns"><button class="btn ghost" id="ghClearBtn">清除配置</button>' +
+    '<button class="btn ghost" id="mdCancel">取消</button>' +
+    '<button class="btn primary" id="ghSaveBtn">保存</button></div>');
+  document.getElementById('mdCancel').onclick = closeModal;
+  document.getElementById('ghClearBtn').onclick = function(){
+    if(!confirm('清除这台设备上保存的 GitHub 配置？')) return;
+    ghClear(); closeModal(); ghRender();
+  };
+  document.getElementById('ghSaveBtn').onclick = function(){
+    var o = {
+      owner:  document.getElementById('ghOwner').value.trim(),
+      repo:   document.getElementById('ghRepo').value.trim(),
+      path:   document.getElementById('ghPath').value.trim() || GH_FILE,
+      branch: document.getElementById('ghBranch').value.trim() || 'main',
+      token:  document.getElementById('ghToken').value.trim(),
+      committer: document.getElementById('ghUser').value.trim(),
+      lastUpload: (ghCfg()||{}).lastUpload || '',
+      lastPull:   (ghCfg()||{}).lastPull || ''
+    };
+    if(!o.owner || !o.repo || !o.token){ alert('用户名、仓库名、访问令牌都要填。'); return; }
+    ghSaveCfg(o); closeModal(); ghRender();
+    alert('配置已保存。现在可以点「上传到仓库」了。');
+  };
+}
+function ghApiUrl(g, withRef){
+  var base = 'https://api.github.com/repos/' + encodeURIComponent(g.owner) + '/' + encodeURIComponent(g.repo) + '/contents/' + encodeURIComponent(g.path || GH_FILE);
+  if(withRef) base += '?ref=' + encodeURIComponent(g.branch || 'main');
+  return base;
+}
+function ghHeaders(g){
+  return {
+    'Authorization': 'Bearer ' + g.token,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+}
+// base64 编解码（UTF-8 安全）
+function b64enc(str){
+  var bytes = new TextEncoder().encode(str);
+  var bin = '';
+  for(var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+function b64dec(b64){
+  var bin = atob(String(b64).replace(/\s/g, ''));
+  var bytes = new Uint8Array(bin.length);
+  for(var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function ghMsg(txt, cls){
+  var el = document.getElementById('ghStat');
+  if(el) el.innerHTML = '<span class="' + (cls||'') + '">' + esc(txt) + '</span>';
+}
+function ghUpload(){
+  var g = ghCfg();
+  if(!g || !g.token){ alert('请先点「设置」完成配置。'); return; }
+  var days = 0;
+  for(var dk in allData) if(allData[dk] && Object.keys(allData[dk]).length) days++;
+  if(!days){ alert('当前还没有记录，无需上传。'); return; }
+  if(!confirm('上传到 GitHub？\n\n仓库：' + g.owner + '/' + g.repo + '\n文件：' + (g.path||GH_FILE) + '\n内容：' + days + ' 天记录 + 账号任务配置\n\n会覆盖仓库里同名的旧备份。')) return;
+
+  var payload = JSON.stringify(backupJSON(), null, 1);
+  ghMsg('正在上传…');
+  var url = ghApiUrl(g, false);
+
+  // 先查文件是否存在，拿 sha
+  fetch(ghApiUrl(g, false) , { headers: ghHeaders(g) })
+    .then(function(r){
+      if(r.status === 404) return null;
+      if(!r.ok) return r.text().then(function(t){ throw new Error('读取失败 HTTP ' + r.status + '：' + t.slice(0,120)); });
+      return r.json();
+    })
+    .then(function(cur){
+      var body = {
+        message: '更新打卡备份 ' + todayKey,
+        content: b64enc(payload),
+        branch: g.branch || 'main'
+      };
+      if(g.committer) body.committer = { name: g.committer, email: 'backup@local' };
+      if(cur && cur.sha) body.sha = cur.sha;
+      return fetch(url, {
+        method: 'PUT',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders(g)),
+        body: JSON.stringify(body)
+      });
+    })
+    .then(function(r){
+      if(!r.ok) return r.text().then(function(t){
+        var hint = '';
+        if(r.status === 401) hint = '\n（令牌无效或已过期）';
+        if(r.status === 403) hint = '\n（权限不足，检查是否给了 Contents: Read and write）';
+        if(r.status === 404) hint = '\n（仓库名或用户名不对，或令牌没授权这个仓库）';
+        if(r.status === 409) hint = '\n（分支冲突，检查分支名是否正确）';
+        throw new Error('上传失败 HTTP ' + r.status + hint + '\n' + t.slice(0,200));
+      });
+      return r.json();
+    })
+    .then(function(res){
+      g.lastUpload = new Date().toLocaleString('zh-CN');
+      ghSaveCfg(g);
+      ghRender();
+      renderBkStat();
+      alert('上传成功。\n\n已写入 ' + (g.path||GH_FILE) + '，共 ' + days + ' 天记录。');
+    })
+    .catch(function(e){
+      ghMsg('上传失败：' + e.message, 'bk-gh-err');
+      alert('上传失败：\n\n' + e.message);
+    });
+}
+function ghPull(){
+  var g = ghCfg();
+  if(!g || !g.token){ alert('请先点「设置」完成配置。'); return; }
+  ghMsg('正在读取…');
+  fetch(ghApiUrl(g, true), { headers: ghHeaders(g) })
+    .then(function(r){
+      if(r.status === 404) throw new Error('仓库里还没有备份文件（' + (g.path||GH_FILE) + '）。先上传一次。');
+      if(!r.ok) return r.text().then(function(t){ throw new Error('读取失败 HTTP ' + r.status + '：' + t.slice(0,120)); });
+      return r.json();
+    })
+    .then(function(info){
+      var txt = b64dec(info.content || '');
+      var obj;
+      try { obj = JSON.parse(txt); }
+      catch(e){ throw new Error('备份文件内容无法解析。'); }
+      if(!obj || obj.app !== 'weibo-panel' || !obj.records) throw new Error('这不是本面板的备份文件。');
+
+      var nd = Object.keys(obj.records || {}).length;
+      var cur = 0;
+      for(var dk in allData) if(allData[dk] && Object.keys(allData[dk]).length) cur++;
+      var msg = '从 GitHub 恢复？\n\n仓库备份：' + nd + ' 天记录（' + (obj.exportedAt||'未知时间') + '）\n当前数据：' + cur + ' 天记录\n\n当前数据会被覆盖，无法撤销。';
+      if(!confirm(msg)){ ghMsg('已取消。'); ghRender(); return; }
+
+      try {
+        localStorage.setItem(ALL_KEY, JSON.stringify(obj.records || {}));
+        if(obj.config && obj.config.accounts && obj.config.tasks) localStorage.setItem(CFG_KEY, JSON.stringify(obj.config));
+      } catch(e){
+        throw new Error('写入失败，可能是存储空间不足。');
+      }
+      g.lastPull = new Date().toLocaleString('zh-CN');
+      ghSaveCfg(g);
+      alert('恢复完成，页面将重新加载。');
+      location.reload();
+    })
+    .catch(function(e){
+      ghMsg('恢复失败：' + e.message, 'bk-gh-err');
+      alert('恢复失败：\n\n' + e.message);
+    });
 }
 function doExportFile(){
   var txt = JSON.stringify(backupJSON(), null, 1);
@@ -1343,7 +1927,11 @@ function applyBackup(obj){
   if(!confirm(msg)) return;
   try {
     localStorage.setItem(ALL_KEY, JSON.stringify(obj.records || {}));
-    if(obj.config && obj.config.accounts && obj.config.tasks) localStorage.setItem(CFG_KEY, JSON.stringify(obj.config));
+    if(obj.config && obj.config.accounts && obj.config.tasks){
+      // 老备份里可能是已废弃的类型，统一迁移后再写入
+      migrateCfg(obj.config);
+      localStorage.setItem(CFG_KEY, JSON.stringify(obj.config));
+    }
   } catch(e){
     alert('写入失败，可能是存储空间不足。');
     return;
@@ -1355,6 +1943,21 @@ function applyBackup(obj){
 document.getElementById('bkExport').addEventListener('click', doExportFile);
 document.getElementById('bkCopy').addEventListener('click', doCopyBackup);
 document.getElementById('bkPaste').addEventListener('click', doPasteRestore);
+document.getElementById('bkSnapSave').addEventListener('click', function(){
+  var n = 0;
+  for(var dk in allData) if(allData[dk] && Object.keys(allData[dk]).length) n++;
+  if(!n){ alert('当前还没有任何记录，无需存快照。'); return; }
+  if(snapshotSave(true)){
+    renderBkStat();
+    alert('快照已保存：' + n + ' 天记录。');
+  } else {
+    alert('保存失败，可能是存储空间不足。');
+  }
+});
+document.getElementById('bkSnapRestore').addEventListener('click', snapshotRestore);
+document.getElementById('ghSetup').addEventListener('click', ghSetup);
+document.getElementById('ghUpload').addEventListener('click', ghUpload);
+document.getElementById('ghPull').addEventListener('click', ghPull);
 document.getElementById('bkImportFile').addEventListener('click', function(){
   var inp = document.getElementById('bkFile');
   inp.value = '';
@@ -1412,20 +2015,16 @@ document.getElementById('modal').addEventListener('click', function(e){
 function openAcctModal(idx){
   var a = (idx >= 0) ? ACCOUNTS[idx] : null;
   var cur = a ? allKeys(a).slice() : [];
-  var types = ['main','norm','care','task'];
   var h = '<h2 class="md-title">' + (a ? '编辑账号' : '添加账号') + '</h2>';
   h += '<label class="fld"><span>昵称</span><input id="fName" type="text" autocomplete="off" value="' + (a ? esc(a.name) : '') + '" placeholder="例如 账号1"></label>';
-  h += '<label class="fld"><span>类型</span><select id="fType">';
-  for(var i = 0; i < types.length; i++){
-    h += '<option value="' + types[i] + '"' + ((a ? a.type : 'norm') === types[i] ? ' selected' : '') + '>' + TYPE_LABEL[types[i]] + '</option>';
+  var defType = a ? a.type : 'norm';
+  h += '<label class="fld"><span>账号类型</span><select id="fType">';
+  for(var ti = 0; ti < TYPE_ORDER.length; ti++){
+    var tv = TYPE_ORDER[ti];
+    h += '<option value="' + tv + '"' + (defType === tv ? ' selected' : '') + '>' + TYPE_LABEL[tv] + '</option>';
   }
   h += '</select></label>';
-  var lg = (a && a.login) ? a.login : 0;
-  h += '<label class="fld"><span>登录优先级（决定它排在切号顺序第几位）</span><select id="fLogin">' +
-    '<option value="0"' + (lg === 0 ? ' selected' : '') + '>不指定</option>' +
-    '<option value="1"' + (lg === 1 ? ' selected' : '') + '>① 首选登录</option>' +
-    '<option value="2"' + (lg === 2 ? ' selected' : '') + '>② 次选登录</option>' +
-    '</select></label>';
+  h += '<p class="fld-hint">类型只是标记，不影响切号顺序；顺序由上方「账号」列表的 ↑ ↓ 决定。</p>';
   h += '<label class="fld"><span>养号备注（可留空，显示在「养号 · 顺带做」后面）</span><input id="fNote" type="text" autocomplete="off" value="' + (a && a.careNote ? esc(a.careNote) : '') + '" placeholder="例如 偶尔做"></label>';
   h += '<p class="md-label">这个号要做哪些任务</p><div class="pick" id="pickBox">';
   for(var gi = 0; gi < GROUP_ORDER.length; gi++){
@@ -1464,7 +2063,6 @@ function openAcctModal(idx){
       id: a ? a.id : ('u' + Date.now()),
       name: name,
       type: document.getElementById('fType').value,
-      login: parseInt(document.getElementById('fLogin').value, 10) || 0,
       tasks: ordered
     };
     var note = document.getElementById('fNote').value.trim();
@@ -1589,6 +2187,12 @@ document.getElementById('resetCfgBtn').addEventListener('click', function(){
 
 render();
 renderCfg();
+bindFolds();
+
+/* 启动后自动存一份快照（每天一次），防 iOS 清理 localStorage */
+snapshotSave(false);
+renderBkStat();
+ghRender();
 </script>
 </body>
 </html>
